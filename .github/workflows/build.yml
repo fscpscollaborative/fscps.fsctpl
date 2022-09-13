@@ -1,0 +1,94 @@
+name: (BUILD)
+
+on:
+  workflow_dispatch:
+   inputs:
+      version:
+        description: 'Select FnSCM Version'
+        required: false
+        default: ''
+        type: choice
+        options:
+        - "*"
+        - "10.0.27"
+        - "10.0.28"
+        - "10.0.29"
+        - "10.0.30"
+        
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: PowerShell
+    
+env:
+  FORCE_COLOR: 3
+
+jobs:
+   Initialization:
+    runs-on: [ windows ]
+    outputs:
+      settings: ${{ steps.ReadSettings.outputs.SettingsJson }}
+      source_branch: ${{ steps.ReadSettings.outputs.source_branch }}
+      versions: ${{ steps.ReadSettings.outputs.VersionsJson }}
+      environments: ${{ steps.ReadSettings.outputs.EnvironmentsJson }}
+      githubRunner: ${{ steps.ReadSettings.outputs.GitHubRunnerJson }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Initialize the workflow
+        id: init
+        uses: ciellos-dev/FnSCM-Go-Actions/WorkflowInitialize@latest
+
+      - name: Read settings
+        id: ReadSettings
+        uses: ciellos-dev/FnSCM-Go-Actions/ReadSettings@latest
+        with:
+          version: ${{ inputs.version }}
+
+   Build:
+    needs: [ Initialization ]
+    runs-on: ${{ fromJson(needs.Initialization.outputs.githubRunner) }}
+    strategy:
+      matrix:
+        version: ${{ fromJson(needs.Initialization.outputs.versions) }}
+      fail-fast: false
+    name: Build ${{ matrix.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Read settings
+        uses: ciellos-dev/FnSCM-Go-Actions/ReadSettings@latest
+
+      - name: Read secrets
+        uses: ciellos-dev/FnSCM-Go-Actions/ReadSecrets@latest
+        env:
+          secrets: ${{ toJson(secrets) }}
+        with:
+          settingsJson: ${{ env.Settings }}
+          secrets: ""
+          
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: 5.10.x    
+          
+      - name: Run pipeline
+        uses: ciellos-dev/FnSCM-Go-Actions/RunPipeline@latest
+        id: runpipeline
+        with:
+          version: ${{ matrix.version }}
+          settingsJson: ${{ env.Settings }}
+          SecretsJson: ${{ env.RepoSecrets }}
+      
+      - name: Publish artifacts  
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.runpipeline.outputs.PACKAGE_NAME }}
+          path: ${{ steps.runpipeline.outputs.PACKAGE_PATH }}

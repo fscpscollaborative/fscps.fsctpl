@@ -1,0 +1,1 @@
+# -FnSCM-Go-Template

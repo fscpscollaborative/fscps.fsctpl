@@ -13,8 +13,8 @@ on:
         - "Contoso-QA"
         - "Contoso-UAT"
 
-  schedule:
-   - cron: '0 22 * * *' #Nightly deployment by 00:00 UTC
+ # schedule:
+#   - cron: '0 22 * * *' #Nightly deployment by 00:00 UTC
         
 permissions:
   contents: read

@@ -1,1 +1,1 @@
-# FnSCM-Go-Template
+# FSCM-PS-Template

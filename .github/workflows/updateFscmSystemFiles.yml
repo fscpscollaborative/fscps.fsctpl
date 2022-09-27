@@ -72,7 +72,7 @@ jobs:
             Add-Content -Path $env:GITHUB_ENV -Value "TemplateUrl=$templateUrl"
           }
       - name: Check for updates to FSCM-PS system files
-        uses: ciellos-dev/FSCM-PS/CheckForUpdates@main
+        uses: ciellos-dev/FSCM-PS/CheckForUpdates@latest
         with:
           type: ${{ needs.Initialization.outputs.type}}
           token: ${{ secrets.REPO_SCOPED_TOKEN }}

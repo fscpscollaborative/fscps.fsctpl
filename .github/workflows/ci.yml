@@ -36,7 +36,7 @@ jobs:
         uses: ciellos-dev/FSCM-PS/ReadSettings@latest
 
       - name: Check for updates to FSCM-PS system files
-        uses: ciellos-dev/FSCM-PS/CheckForUpdates@main
+        uses: ciellos-dev/FSCM-PS/CheckForUpdates@latest
         with:
           settingsJson: ${{ env.Settings }}
           SecretsJson: ${{ env.RepoSecrets }}

@@ -4,18 +4,13 @@ on:
   workflow_dispatch:
    inputs:
       environment:
-        description: 'Select FnSCM Environment'
+        description: 'Select FSCM Environment'
         required: false
         default: ''
         type: choice
         options:
         - "*"
-        - "Contoso-QA"
-        - "Contoso-UAT"
 
- # schedule:
- #   - cron: '1 * * * *' # Schedule it to execute once per hour
-        
 permissions:
   contents: read
 

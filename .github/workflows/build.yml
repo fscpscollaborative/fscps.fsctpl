@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
    inputs:
       version:
-        description: 'Select FnSCM Version'
+        description: 'Select FSCM Version'
         required: false
         default: ''
         type: choice

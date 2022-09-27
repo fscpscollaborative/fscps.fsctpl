@@ -23,6 +23,7 @@ jobs:
     runs-on: [ windows ]
     outputs:
       settings: ${{ steps.ReadSettings.outputs.SettingsJson }}
+      type: ${{ steps.ReadSettings.outputs.type }}
       source_branch: ${{ steps.ReadSettings.outputs.source_branch }}
       versions: ${{ steps.ReadSettings.outputs.VersionsJson }}
       environments: ${{ steps.ReadSettings.outputs.EnvironmentsJson }}
@@ -94,6 +95,7 @@ jobs:
         uses: ciellos-dev/FSCM-PS/RunPipeline@latest
         id: runpipeline
         with:
+          type: ${{ needs.Initialization.outputs.type}}
           environment_name: ${{ matrix.environment }}
           settingsJson: ${{ env.Settings }}
           SecretsJson: ${{ env.RepoSecrets }}

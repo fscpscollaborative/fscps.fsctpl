@@ -46,7 +46,9 @@ jobs:
           
       - name: Check for updates to FSCM-PS system files
         uses: ciellos-dev/FSCM-PS/CheckForUpdates@main
-
+        with:
+          settingsJson: ${{ env.Settings }}
+          SecretsJson: ${{ env.RepoSecrets }}
    Build:
     needs: [ Initialization ]
     runs-on: ${{ fromJson(needs.Initialization.outputs.githubRunner) }}

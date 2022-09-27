@@ -108,16 +108,12 @@ jobs:
           
    PostProcess: 
     if: always()
-    runs-on: [ self-hosted, Windows, WinStandard ]
+    runs-on: ${{ fromJson(needs.Initialization.outputs.githubRunner) }}
     needs: [ Initialization,  Build ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Read settings
-        id: ReadSettings
-        uses: ciellos-dev/FSCM-PS/ReadSettings@latest
-
       - name: Read secrets
         uses: ciellos-dev/FSCM-PS/ReadSecrets@latest
         env:
@@ -131,5 +127,5 @@ jobs:
         uses: ciellos-dev/FSCM-PS/WorkflowPostProcess@latest
         with:
           remove_current: ${{ needs.Initialization.outputs.environments == '' }}
-          settingsJson: ${{ env.Settings }}
+          settingsJson: ${{ needs.Initialization.outputs.settings }}
           SecretsJson: ${{ env.RepoSecrets }}

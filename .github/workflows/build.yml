@@ -119,7 +119,7 @@ jobs:
         env:
           secrets: ${{ toJson(secrets) }}
         with:
-          settingsJson: ${{ env.Settings }}
+          settingsJson: ${{ needs.Initialization.outputs.settings }}
           secrets: ""
           
       - name: Finalize the workflow

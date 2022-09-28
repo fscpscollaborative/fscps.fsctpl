@@ -45,6 +45,7 @@ jobs:
       - name: Check for updates to FSCM-PS system files
         uses: ciellos-dev/FSCM-PS/CheckForUpdates@latest
         with:
+          type: ${{ steps.ReadSettings.outputs.type }}
           settingsJson: ${{ env.Settings }}
           SecretsJson: ${{ env.RepoSecrets }}
    Deploy:

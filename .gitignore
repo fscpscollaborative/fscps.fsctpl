@@ -316,8 +316,8 @@ __pycache__/
 !.github
 !.github/*
 !.github/workflows/*
-!.FSCM-PS
-!.FSCM-PS/*
+!.FSC-PS
+!.FSC-PS/*
 *.testlog
 *.manifest
 

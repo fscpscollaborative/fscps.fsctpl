@@ -1,1 +1,1 @@
-# FSCM-PS-Template
+# FSC-PS-Template
